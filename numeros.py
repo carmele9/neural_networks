@@ -14,7 +14,7 @@ fig = plt.figure(figsize=(10, 10))
 n_rows = 3
 n_cols = 3
 for i in range(9):
-    fig.add_subplot(n_rows, n_cols, i+1)
+    fig.add_subplot(n_rows, n_cols, i + 1)
     plt.imshow(train_images[i])
     plt.title("Digit: {}".format(train_labels[i]))
     plt.axis(False)
@@ -40,22 +40,22 @@ print("Primer label despues de la conversion onehot " + str(train_labels[0]))
 # La f(x) de activacion es softmax
 model = tf.keras.Sequential([
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(units = 512, activation = "relu"),
-    tf.keras.layers.Dense(units = 10, activation = "softmax")
-]) # Capas detras de una la otra
+    tf.keras.layers.Dense(units=512, activation="relu"),
+    tf.keras.layers.Dense(units=10, activation="softmax")
+])  # Capas detras de una la otra
 
-# Optimizar el modelo: funcion de perdida
+# Optimizar el modelo: function de perdida
 model.compile(
-    loss = "categorical_crossentropy",
-    optimizer = "adam",
-    metrics = ["accuracy"]
+    loss="categorical_crossentropy",
+    optimizer="adam",
+    metrics=["accuracy"]
 )
 
 # Entrenamiento del modelo
 history = model.fit(
-    x = train_images,
-    y = train_labels,
-    epochs = 10
+    x=train_images,
+    y=train_labels,
+    epochs=10
 )
 # Representacion grafica de iteraciones cuando la funcion de perdida se va a acercando cada vez
 # mas a 0 y el accuracy aumenta de valor
@@ -64,15 +64,24 @@ plt.xlabel("epochs")
 plt.legend(["loss"])
 plt.show()
 
-plt.plot(history.history["accuracy"], color = "orange")
+plt.plot(history.history["accuracy"], color="orange")
 plt.xlabel("epochs")
 plt.legend(["accuracy"])
 plt.show()
 
 # Evaluando el modelo usando los datos de testeo
 test_loss, test_accuraccy = model.evaluate(
-    x = test_images,
-    y = test_labels
+    x=test_images,
+    y=test_labels
 )
 print("Test Loss: " + str(test_loss))
 print("Test Accuracy: " + str(test_accuraccy))
+
+# Prediccion
+pred_prob = model.predict(test_images)
+pred_class = tf.argmax(pred_prob, axis=-1).numpy()  # maximo de las probabilidades de la clases
+index = 11
+plt.imshow(test_images[index])
+plt.show()
+print("Probabilidades predichas para index 11: " + str(pred_prob[index]))
+print("Clase predicha para index 11: " + str(pred_class[index]))
