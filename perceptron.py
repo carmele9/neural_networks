@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
 class Perceptron:
 
     def plot_data(self, x, y, i, fig):
@@ -12,8 +11,17 @@ class Perceptron:
         plt.title(f"Iteración {i + 1}")
         plt.xlabel("Feature 1")
         plt.ylabel("Feature 2")
+        x_plots = [np.float64(-4), np.float64(-2), np.float64(0), np.float64(2), np.float64(4)]
+        y_plots = []
+        for counts in range (0, len(x_plots)):
+            y_line = -(self.weights[0] / self.weights[1]) / (self.weights[0] / self.weights[2]) * x_plots[counts] + (-self.weights[0] / self.weights[1])
+            y_plots.append(y_line)
+        print("Iteracion: ", i)
+        print("X_plots: ", x_plots)
+        print("Y_plots: ", y_plots)
+        print("Weights", self.weights)
+        plt.plot(x_plots, y_plots)
         fig.canvas.draw_idle()
-
 
     def fit(self, x, y, num_iter=100):
         plt.ion()
@@ -28,11 +36,14 @@ class Perceptron:
             self.plot_data(x[:, :-1], y, i, fig)
             plt.pause(0.25)
             for j in range(n_samples):  # Recorremos cada valor de n_samples
-                  if y[j]*np.dot(self.weights, x[j, :]) <= 0:  # Evaluamos el producto escalar
+                if y[j] * np.dot(self.weights, x[j, :]) <= 0:
+                    # Evaluamos el producto escalar
                     # Actualizamos los pesos
-                    self.weights += y[j]*x[j, :]
-        plt.waitforbuttonpress()
+                    self.weights += float(y[j]) * x[j, :]
+                    print("X_J", x[j, :])
 
+        print(self.weights)
+        plt.waitforbuttonpress()
 
     def predict(self, x):
         if not hasattr(self, "weights"):
@@ -46,6 +57,4 @@ class Perceptron:
 
     def score(self, x, y):
         pred_y = self.predict(x)
-        return np.mean(y==pred_y)  # Comparamos la pred_y con la y real y analuzamos la media
-
-
+        return np.mean(y == pred_y)  # Comparamos la pred_y con la y real y analuzamos la media
