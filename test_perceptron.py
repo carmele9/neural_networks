@@ -11,9 +11,6 @@ x, y = make_classification(
     n_clusters_per_class=1
 )
 
-# Representamos los datos
-plt.scatter(x[:, 0], x[:, 1], marker="o", c=y)
-plt.show()
 
 # Usamos el perceptron para hacer el fit
 perceptron = Perceptron()
