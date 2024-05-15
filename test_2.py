@@ -1,5 +1,4 @@
 from sklearn.datasets import make_classification
-import matplotlib.pyplot as plt
 from perceptron import Perceptron
 import numpy as np
 

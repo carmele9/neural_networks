@@ -43,7 +43,7 @@ class Perceptron:
             for j in range(n_samples):  # Recorremos cada valor de n_samples
                 producto_escalar = np.dot(self.weights, x[j, :])
                 print("Producto escalar:", producto_escalar)
-                y_predicted = np.where(producto_escalar > 0, 1, -1)
+                y_predicted = np.where(producto_escalar > 0, 1, -1)  # Funcion de activacion
                 print("Antes de actualizar pesos:", self.weights)
                 update = self.learning_rate * (y[j] - y_predicted)
                 self.weights += update * x[j, :]
