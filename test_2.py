@@ -15,4 +15,4 @@ x, y = make_classification(
 
 #Usamos el perceptron para hacer el fit
 perceptron = Perceptron()
-perceptron.fit(x, y, num_iter=10)
+perceptron.fit(x, y, num_iter=50)

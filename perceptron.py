@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 
 class Perceptron:
 
-    def __init__(self):
+    def __init__(self, learning_rate=0.01):
+        self.learning_rate = learning_rate
         self.weights = None
 
     def plot_data(self, x, y, i, fig):
@@ -33,18 +34,20 @@ class Perceptron:
         n_samples = x.shape[0]
         n_features = x.shape[1]
         self.weights = np.zeros((n_features + 1,))
-        x = np.concatenate([x, np.ones((n_samples, 1))], axis=1)  # Columna de unos
+        x = np.concatenate([x, np.ones((n_samples, 1))], axis=1)  # Columna de unos / el bias viene dentro del vector
         for i in range(num_iter):  # Recorremos las iteraciones
+            plt.clf()
             self.plot_data(x[:, :-1], y, i, fig)
             plt.pause(0.25)
+
             for j in range(n_samples):  # Recorremos cada valor de n_samples
                 producto_escalar = np.dot(self.weights, x[j, :])
                 print("Producto escalar:", producto_escalar)
-                if y[j] * np.dot(self.weights, x[j, :]) <= 0:
-                    # Evaluamos el producto escalar
-                    print("Antes de actualizar pesos:", self.weights)
-                    self.weights += float(y[j]) * x[j, :]
-                    print("Después de actualizar pesos:", self.weights)
+                y_predicted = np.where(producto_escalar > 0, 1, -1)
+                print("Antes de actualizar pesos:", self.weights)
+                update = self.learning_rate * (y[j] - y_predicted)
+                self.weights += update * x[j, :]
+                print("Después de actualizar pesos:", self.weights)
 
         print(self.weights)
         plt.waitforbuttonpress()
