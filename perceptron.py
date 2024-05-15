@@ -4,16 +4,19 @@ import matplotlib.pyplot as plt
 
 class Perceptron:
 
+    def __init__(self):
+        self.weights = None
+
     def plot_data(self, x, y, i, fig):
         # Dibujamos los datos
         plt.scatter(x[:, 0], x[:, 1], c=y, cmap='viridis')
         plt.title(f"Iteración {i + 1}")
         plt.xlabel("Feature 1")
         plt.ylabel("Feature 2")
-        x_plots = [np.float64(-4), np.float64(-2), np.float64(0), np.float64(2), np.float64(4)]
+        x_plots = np.array([x[:, 0].min(), x[:, 0].max()])
         y_plots = []
         for counts in range (0, len(x_plots)):
-            y_line = -(self.weights[0] / self.weights[1]) / (self.weights[0] / self.weights[2]) * x_plots[counts] + (-self.weights[0] / self.weights[1])
+            y_line = -(self.weights[2] / self.weights[1]) / (self.weights[2] / self.weights[0]) * x_plots[counts] + (-self.weights[2] / self.weights[1])
             y_plots.append(y_line)
         print("Iteracion: ", i)
         print("X_plots: ", x_plots)
@@ -35,11 +38,13 @@ class Perceptron:
             self.plot_data(x[:, :-1], y, i, fig)
             plt.pause(0.25)
             for j in range(n_samples):  # Recorremos cada valor de n_samples
+                producto_escalar = np.dot(self.weights, x[j, :])
+                print("Producto escalar:", producto_escalar)
                 if y[j] * np.dot(self.weights, x[j, :]) <= 0:
                     # Evaluamos el producto escalar
-                    # Actualizamos los pesos
+                    print("Antes de actualizar pesos:", self.weights)
                     self.weights += float(y[j]) * x[j, :]
-                    print("X_J", x[j, :])
+                    print("Después de actualizar pesos:", self.weights)
 
         print(self.weights)
         plt.waitforbuttonpress()
